@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summer Camp Finder | Parenthood Journey ERG</title>
+  <style>
+    :root {
+      --primary: #FF6B35;
+      --primary-light: #FFF0EB;
+      --secondary: #2D6A4F;
+      --secondary-light: #EAF4EF;
+      --accent: #F7C59F;
+      --purple: #7B4FA0;
+      --purple-light: #F3EBF9;
+      --blue: #2563EB;
+      --blue-light: #EFF6FF;
+      --gold: #B45309;
+      --gold-light: #FFFBEB;
+      --dark: #1A1A2E;
+      --mid: #4A4A68;
+      --light: #F8F9FA;
+      --white: #FFFFFF;
+      --border: #E0E0E8;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #FF8C61 100%);
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .erg-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    header h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      font-weight: 800;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    header p {
+      font-size: 16px;
+      opacity: 0.9;
+      max-width: 520px;
+    }
+
+    /* ── NAV TABS ── */
+    .tab-nav {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      background: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .tab-btn {
+      padding: 14px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--mid);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--primary); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    /* ── SEARCH CARD ── */
+    .search-card {
+      max-width: 960px;
+      margin: -28px auto 32px;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 28px 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field-group label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--mid);
+    }
+    .field-group input {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 16px;
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 190px;
+    }
+    .field-group input:focus { border-color: var(--primary); }
+    .field-group input::placeholder { color: #B0B0C0; }
+
+    .search-btn {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .search-btn:hover { background: #e55a28; }
+    .search-btn:active { transform: scale(0.98); }
+
+    /* ── FILTER CHIPS ── */
+    .filter-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .filter-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--mid);
+      margin-bottom: 10px;
+    }
+    .age-chips, .type-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--mid);
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--primary); color: var(--primary); }
+    .chip.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+    .chip .chip-icon { font-size: 15px; }
+    .type-chip {
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--mid);
+      border-radius: 30px;
+      padding: 5px 13px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .type-chip:hover { border-color: var(--secondary); color: var(--secondary); }
+    .type-chip.active { background: var(--secondary-light); border-color: var(--secondary); color: var(--secondary); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    /* ── TAB PANELS ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--mid);
+      margin-bottom: 14px;
+    }
+
+    /* ── FEATURED PROVIDERS ── */
+    .providers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .provider-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--dark);
+      display: block;
+    }
+    .provider-card:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .provider-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+    .provider-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .provider-desc { font-size: 11px; color: var(--mid); }
+
+    /* ── RESULT CARDS ── */
+    #status {
+      text-align: center;
+      padding: 20px;
+      color: var(--mid);
+      font-size: 15px;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 20px; height: 20px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .results-grid { display: grid; gap: 14px; }
+
+    .result-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: box-shadow 0.2s, transform 0.2s;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .result-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .result-icon-wrap {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      background: var(--primary-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .result-body { flex: 1; min-width: 0; }
+    .result-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+      text-decoration: none;
+      display: block;
+    }
+    .result-title:hover { color: var(--primary); }
+    .result-url { font-size: 12px; color: var(--secondary); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .result-snippet { font-size: 14px; color: var(--mid); line-height: 1.5; }
+    .visit-btn {
+      flex-shrink: 0;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+    .visit-btn:hover { background: var(--primary); color: var(--white); }
+
+    .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+    .page-btn {
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--mid);
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .page-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+    .page-btn:disabled { opacity: 0.4; cursor: default; }
+    .page-btn.current { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+
+    /* ── RESOURCE HUB TABS ── */
+    .hub-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .hub-tab {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--mid);
+      transition: all 0.2s;
+    }
+    .hub-tab:hover { border-color: var(--primary); color: var(--primary); }
+    .hub-tab.active { background: var(--primary); border-color: var(--primary); color: var(--white); }
+    .hub-panel { display: none; }
+    .hub-panel.active { display: block; }
+
+    /* ── CHECKLIST ── */
+    .checklist-section { margin-bottom: 24px; }
+    .checklist-heading {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+      padding-left: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .checklist-item:hover { background: var(--light); }
+    .checklist-item input[type="checkbox"] {
+      width: 18px; height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--secondary);
+      cursor: pointer;
+    }
+    .checklist-item label {
+      font-size: 14px;
+      color: var(--dark);
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .checklist-item.done label { text-decoration: line-through; color: var(--mid); }
+    .checklist-item .item-note { font-size: 12px; color: var(--mid); display: block; margin-top: 2px; }
+
+    .progress-bar-wrap {
+      background: var(--border);
+      border-radius: 20px;
+      height: 8px;
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), #40B082);
+      border-radius: 20px;
+      transition: width 0.4s ease;
+    }
+    .progress-label { font-size: 12px; color: var(--mid); margin-bottom: 20px; }
+
+    .reset-btn {
+      font-size: 12px;
+      color: var(--mid);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 4px 12px;
+      cursor: pointer;
+      float: right;
+    }
+    .reset-btn:hover { color: var(--primary); border-color: var(--primary); }
+
+    /* ── TIP CARDS ── */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .tip-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: box-shadow 0.2s;
+    }
+    .tip-card:hover { box-shadow: var(--shadow); }
+    .tip-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .tip-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .tip-card h4 { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .tip-card p, .tip-card li { font-size: 13px; color: var(--mid); line-height: 1.6; }
+    .tip-card ul { padding-left: 18px; }
+    .tip-card ul li { margin-bottom: 4px; }
+    .highlight-box {
+      background: var(--gold-light);
+      border: 2px solid #FCD34D;
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+    .highlight-box h3 { font-size: 15px; font-weight: 800; color: var(--gold); margin-bottom: 6px; }
+    .highlight-box p { font-size: 13px; color: #78350F; line-height: 1.6; }
+
+    /* ── QUESTIONS LIST ── */
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .q-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .q-category {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .q-card ul { padding-left: 18px; }
+    .q-card ul li { font-size: 13px; color: var(--mid); margin-bottom: 6px; line-height: 1.5; }
+
+    /* ── GAP WEEK IDEAS ── */
+    .gap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .gap-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .gap-card-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+    .gap-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .gap-card p { font-size: 13px; color: var(--mid); line-height: 1.5; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--mid);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .search-row { flex-direction: column; }
+      .field-group input { width: 100%; }
+      .search-btn { width: 100%; }
+      .result-card { flex-direction: column; }
+      .visit-btn { width: 100%; text-align: center; }
+      .tab-nav { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-inner">
+    <div class="erg-badge">Parenthood Journey ERG</div>
+    <h1>Summer Planning Hub</h1>
+    <p>Find camps, save money, and stay organized. Everything your family needs for a great summer — all in one place.</p>
+  </div>
+</header>
+
+<!-- ── NAV TABS ── -->
+<div class="tab-nav" id="mainTabNav">
+  <button class="tab-btn active" onclick="switchTab('find', this)">Find Camps</button>
+  <button class="tab-btn" onclick="switchTab('checklist', this)">Planning Checklist</button>
+  <button class="tab-btn" onclick="switchTab('money', this)">Save Money</button>
+  <button class="tab-btn" onclick="switchTab('questions', this)">Questions to Ask</button>
+  <button class="tab-btn" onclick="switchTab('gaps', this)">Gap Week Ideas</button>
+</div>
+
+<div style="max-width:960px;margin:0 auto;padding:0 24px;">
+  <!-- SEARCH CARD — shown on Find Camps tab -->
+  <div class="search-card" id="searchCard">
+    <div class="search-row">
+      <div class="field-group">
+        <label>Zip / Postal Code</label>
+        <input type="text" id="zipInput" placeholder="e.g. 10001" maxlength="10" />
+      </div>
+      <button class="search-btn" onclick="runSearch()">Search Camps</button>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-label">Age Group (select any)</div>
+      <div class="age-chips" id="ageChips">
+        <div class="chip active" data-age="infant" onclick="toggleChip(this)">
+          <span class="chip-icon">&#x1F476;</span> Infant &amp; Toddler <small style="opacity:.7">(0–2)</small>
+        </div>
+        <div class="chip active" data-age="preschool" onclick="toggleChip(this)">
+          <span class="chip-icon">&#x1F331;</span> Preschool <small style="opacity:.7">(3–5)</small>
+        </div>
+        <div class="chip active" data-age="elementary" onclick="toggleChip(this)">
+          <span class="chip-icon">&#x1F4DA;</span> Elementary <small style="opacity:.7">(6–10)</small>
+        </div>
+        <div class="chip active" data-age="tween" onclick="toggleChip(this)">
+          <span class="chip-icon">&#x1F3A8;</span> Tween <small style="opacity:.7">(11–13)</small>
+        </div>
+        <div class="chip active" data-age="teen" onclick="toggleChip(this)">
+          <span class="chip-icon">&#x1F31F;</span> Teen <small style="opacity:.7">(14+)</small>
+        </div>
+      </div>
+
+      <div class="filter-label" style="margin-top:16px;">Camp Type</div>
+      <div class="type-chips" id="typeChips">
+        <div class="type-chip active" data-type="all" onclick="toggleTypeChip(this)">All Types</div>
+        <div class="type-chip" data-type="STEM" onclick="toggleTypeChip(this)">STEM / Tech</div>
+        <div class="type-chip" data-type="sports" onclick="toggleTypeChip(this)">Sports</div>
+        <div class="type-chip" data-type="arts music" onclick="toggleTypeChip(this)">Arts &amp; Music</div>
+        <div class="type-chip" data-type="nature outdoor" onclick="toggleTypeChip(this)">Nature / Outdoor</div>
+        <div class="type-chip" data-type="academic" onclick="toggleTypeChip(this)">Academic</div>
+        <div class="type-chip" data-type="day camp" onclick="toggleTypeChip(this)">Day Camp</div>
+        <div class="type-chip" data-type="overnight sleepaway" onclick="toggleTypeChip(this)">Overnight</div>
+        <div class="type-chip" data-type="special needs inclusive" onclick="toggleTypeChip(this)">Inclusive / Special Needs</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<main>
+
+  <!-- ════════════════════════════════════
+       TAB 1: FIND CAMPS
+  ════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-find">
+
+    <!-- Featured Providers -->
+    <div class="section-title">Featured Providers</div>
+    <div class="providers-grid">
+      <a class="provider-card" href="https://clients.brighthorizons.com/Peloton" target="_blank">
+        <span class="provider-icon">&#x2600;&#xFE0F;</span>
+        <div class="provider-name">Bright Horizons</div>
+        <div class="provider-desc">Your employee benefit — backup care &amp; summer programs</div>
+      </a>
+      <a class="provider-card" href="https://www.ymca.org/find-your-y" target="_blank">
+        <span class="provider-icon">&#x1F3CB;&#xFE0F;</span>
+        <div class="provider-name">YMCA</div>
+        <div class="provider-desc">Day camps, sports &amp; swim programs nationwide</div>
+      </a>
+      <a class="provider-card" href="https://www.bgca.org/find-a-club" target="_blank">
+        <span class="provider-icon">&#x1F3C6;</span>
+        <div class="provider-name">Boys &amp; Girls Club</div>
+        <div class="provider-desc">Affordable summer programs, ages 6–18</div>
+      </a>
+      <a class="provider-card" href="https://www.kidscamps.com" target="_blank">
+        <span class="provider-icon">&#x26FA;</span>
+        <div class="provider-name">KidsCamps.com</div>
+        <div class="provider-desc">Large searchable national camp directory</div>
+      </a>
+      <a class="provider-card" href="https://find.acacamps.org/" target="_blank">
+        <span class="provider-icon">&#x1F333;</span>
+        <div class="provider-name">ACA Accredited</div>
+        <div class="provider-desc">Safety-certified camps — rigorous quality standards</div>
+      </a>
+      <a class="provider-card" href="https://www.summerdiscovery.com" target="_blank">
+        <span class="provider-icon">&#x1F4BB;</span>
+        <div class="provider-name">Summer Discovery</div>
+        <div class="provider-desc">Academic &amp; enrichment programs for teens</div>
+      </a>
+    </div>
+
+    <!-- Search status message -->
+    <div id="status"></div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       TAB 2: PLANNING CHECKLIST
+  ════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-checklist">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div>
+        <div class="progress-bar-wrap" style="width:260px;">
+          <div class="progress-bar" id="progressBar" style="width:0%"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">0 of 0 tasks complete</div>
+      </div>
+      <button class="reset-btn" onclick="resetChecklist()">Reset</button>
+    </div>
+
+    <div class="checklist-section">
+      <div class="checklist-heading">&#x1F4C5; Now (January–March)</div>
+      <div id="checklist-container"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       TAB 3: SAVE MONEY
+  ════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-money">
+
+    <div class="highlight-box">
+      <h3>Did you know? You can pay for camp with pre-tax dollars.</h3>
+      <p>If your child is under 13, summer day camp qualifies as a dependent care expense. Use your <strong>Dependent Care FSA (DCFSA)</strong> — up to $5,000/year in pre-tax dollars — to cover camp costs. That can save $1,200–$1,800+ depending on your tax bracket. Overnight/sleepaway camps do NOT qualify, but day camps do.</p>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-icon" style="background:#EFF6FF;">&#x1F4B3;</div>
+          <h4>Dependent Care FSA</h4>
+        </div>
+        <ul>
+          <li>Use pre-tax payroll dollars — up to $5,000/year</li>
+          <li>Day camp qualifies; overnight camp does NOT</li>
+          <li>Enroll during open enrollment or a qualifying life event</li>
+          <li>Keep all camp receipts and invoices</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-icon" style="background:#FFF0EB;">&#x2600;&#xFE0F;</div>
+          <h4>Bright Horizons Benefit</h4>
+        </div>
+        <ul>
+          <li>Check your employee portal for backup care days</li>
+          <li>Backup care can cover gap weeks between camps</li>
+          <li>Some plans include discounts on Bright Horizons camps</li>
+          <li>Contact HR or Benefits team to confirm your allotment</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-icon" style="background:#EAF4EF;">&#x1F3C6;</div>
+          <h4>Scholarships &amp; Financial Aid</h4>
+        </div>
+        <ul>
+          <li>Most YMCAs offer sliding-scale fees — always ask</li>
+          <li>Boys &amp; Girls Club has very low-cost programs</li>
+          <li>Many camps offer early-bird or sibling discounts</li>
+          <li>Local community foundations often fund summer programs</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-icon" style="background:#F3EBF9;">&#x1F4C6;</div>
+          <h4>Register Early</h4>
+        </div>
+        <ul>
+          <li>Popular camps fill up by February–March</li>
+          <li>Early registration often comes with a 10–15% discount</li>
+          <li>Get on waitlists even if a camp is full — spots open up</li>
+          <li>Some camps offer free weeks if you refer another family</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-icon" style="background:#FFFBEB;">&#x1F4B0;</div>
+          <h4>Budget Planning Tips</h4>
+        </div>
+        <ul>
+          <li>Map out all school-off weeks vs. camp coverage first</li>
+          <li>Mix expensive specialty camps with affordable local ones</li>
+          <li>Consider half-day camps for younger kids (often cheaper)</li>
+          <li>Library summer reading programs are FREE</li>
+          <li>Ask your employer about any childcare stipend benefits</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-icon" style="background:#EFF6FF;">&#x1F9FE;</div>
+          <h4>Tax Credit (CTC)</h4>
+        </div>
+        <ul>
+          <li>Child &amp; Dependent Care Tax Credit (IRS Form 2441)</li>
+          <li>Up to 35% of camp costs, max $3,000 per child</li>
+          <li>Works alongside FSA — talk to your tax advisor</li>
+          <li>Keep all camp payment receipts for tax season</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       TAB 4: QUESTIONS TO ASK
+  ════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-questions">
+    <p style="font-size:14px;color:var(--mid);margin-bottom:20px;">Print this out or pull it up when touring or calling a camp. These are the questions most parents wish they had asked upfront.</p>
+
+    <div class="questions-grid">
+      <div class="q-card">
+        <span class="q-category" style="background:#EFF6FF;color:#1D4ED8;">Safety &amp; Health</span>
+        <ul>
+          <li>What is your staff-to-camper ratio?</li>
+          <li>Are staff first-aid and CPR certified?</li>
+          <li>How do you handle medical emergencies?</li>
+          <li>What is your policy for sick children?</li>
+          <li>Is there a nurse or health professional on site?</li>
+          <li>How do you manage allergies and medications?</li>
+          <li>What is your sunscreen / outdoor heat policy?</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <span class="q-category" style="background:#EAF4EF;color:#166534;">Staff &amp; Supervision</span>
+        <ul>
+          <li>What are staff background check requirements?</li>
+          <li>What is the counselor-to-camper ratio?</li>
+          <li>How are staff trained on bullying / behavior?</li>
+          <li>Are counselors full-time employees or seasonal?</li>
+          <li>What is staff turnover like year to year?</li>
+          <li>Who is the director and what is their experience?</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <span class="q-category" style="background:#FFF0EB;color:#C2410C;">Schedule &amp; Logistics</span>
+        <ul>
+          <li>What are drop-off and pick-up times?</li>
+          <li>Is there before/after care available?</li>
+          <li>What happens on rainy days?</li>
+          <li>Is transportation provided or available?</li>
+          <li>What should kids bring / not bring each day?</li>
+          <li>How are field trips communicated?</li>
+          <li>What is the absence / make-up policy?</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <span class="q-category" style="background:#F3EBF9;color:#7E22CE;">Inclusion &amp; Fit</span>
+        <ul>
+          <li>How do you support kids with learning differences?</li>
+          <li>Do you accommodate IEPs or 504 plans?</li>
+          <li>How do you handle homesickness or social anxiety?</li>
+          <li>Can siblings be in the same group if we prefer?</li>
+          <li>What is your anti-bullying / conflict policy?</li>
+          <li>How do you handle behavioral challenges?</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <span class="q-category" style="background:#FFFBEB;color:#92400E;">Cost &amp; Registration</span>
+        <ul>
+          <li>What is included in the price?</li>
+          <li>Are there sibling or early-bird discounts?</li>
+          <li>Do you offer financial assistance or scholarships?</li>
+          <li>What is the refund/cancellation policy?</li>
+          <li>Can I use a Dependent Care FSA to pay?</li>
+          <li>Do you provide receipts for FSA reimbursement?</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <span class="q-category" style="background:#EAF4EF;color:#166534;">Communication</span>
+        <ul>
+          <li>How do you communicate with parents daily?</li>
+          <li>How quickly do you respond to parent calls/emails?</li>
+          <li>Can I visit my child during camp?</li>
+          <li>How are behavioral incidents communicated?</li>
+          <li>Do you post photos? (Privacy policy?)</li>
+          <li>Is there an app or parent portal?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       TAB 5: GAP WEEK IDEAS
+  ════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-gaps">
+
+    <div class="highlight-box">
+      <h3>Don't forget about Bright Horizons Backup Care</h3>
+      <p>Your employee benefit includes backup care days that are specifically designed for situations like gap weeks between camps or unexpected camp closures. Check your Bright Horizons employee portal or ask HR how many days you have. These days can be used for in-home care or center-based care.</p>
+    </div>
+
+    <p style="font-size:14px;color:var(--mid);margin-bottom:20px;">Gap weeks — when school is out but camp hasn't started yet, or between camp sessions — are one of the biggest stressors for working parents. Here are ideas for every budget.</p>
+
+    <div class="gap-grid">
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F3E0;</span>
+        <h4>In-Home Options</h4>
+        <p>Use Bright Horizons backup care for in-home sitters. Split a nanny or babysitter with a neighbor family. A college student home for the summer can be a great flexible option.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F4DA;</span>
+        <h4>Library Programs</h4>
+        <p>Most public libraries run FREE summer reading programs with daily activities, crafts, STEM workshops, and author visits. Completely free — just register your child at your local branch.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F3A8;</span>
+        <h4>One-Week Mini Camps</h4>
+        <p>Many recreation centers, art studios, and dance schools offer single-week drop-in camps specifically designed to fill gaps. Search "[your city] one week summer camp" for local options.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F468;&#x200D;&#x1F467;</span>
+        <h4>Family Flex Days</h4>
+        <p>Use a PTO day or WFH day strategically during a gap week. Plan something fun — a day trip, museum visit, or staycation activity. Even one covered day eases the logistics crunch.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F91D;</span>
+        <h4>Parent Pod / Childcare Share</h4>
+        <p>Coordinate with other ERG families! A rotating schedule where 2–3 parents take turns watching a small group of kids can cover a full gap week with minimal cost.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F3D9;&#xFE0F;</span>
+        <h4>Parks &amp; Recreation</h4>
+        <p>City and county parks departments often run low-cost or free daily programs during summer. Check your local parks & rec website for drop-in sports, crafts, and nature programs.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x26EA;</span>
+        <h4>Faith-Based Programs</h4>
+        <p>Many churches, synagogues, and community centers run VBS (Vacation Bible School) or community summer programs that are free or very low-cost and open to all families.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F4F1;</span>
+        <h4>Virtual / Self-Directed</h4>
+        <p>For older kids (10+): Khan Academy, Scratch coding, Outschool classes, YouTube cooking/art tutorials. Set a daily "project" to keep them engaged while you work from home.</p>
+      </div>
+
+      <div class="gap-card">
+        <span class="gap-card-icon">&#x1F467;</span>
+        <h4>Extended Family</h4>
+        <p>A grandparent, aunt, or uncle visit during a gap week can be a win-win — the kids love the special time, and you have trusted childcare covered. Plan these visits around known gaps.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Built with care for the Parenthood Journey ERG &nbsp;|&nbsp; Powered by Google Programmable Search &amp; OpenStreetMap &nbsp;|&nbsp; 100% free to run
+</footer>
+
+<script>
+  // ─────────────────────────────────────────────────────────────
+  //  TAB NAVIGATION
+  // ─────────────────────────────────────────────────────────────
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+
+    const searchCard = document.getElementById('searchCard');
+    searchCard.style.display = (tabId === 'find') ? 'block' : 'none';
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  CHECKLIST DATA
+  // ─────────────────────────────────────────────────────────────
+  const CHECKLIST = [
+    { id: 'c1',  phase: 'Now (Jan–Mar)', items: [
+      { id: 'i1',  text: 'Map out all school-off weeks for the summer',           note: 'Check school calendar for last day, breaks, and first day of fall' },
+      { id: 'i2',  text: 'Check Bright Horizons backup care days available',       note: 'Log into your employee portal or ask HR' },
+      { id: 'i3',  text: 'Enroll in Dependent Care FSA if not already enrolled',  note: 'Open enrollment or qualifying life event required; up to $5,000 pre-tax' },
+      { id: 'i4',  text: 'Research camp options by age group',                    note: 'Use the Find Camps tab above' },
+      { id: 'i5',  text: 'Set a summer childcare budget',                         note: 'Include camp fees, backup care, gap weeks, and supplies' },
+    ]},
+    { id: 'c2', phase: 'Register (Feb–Apr)', items: [
+      { id: 'i6',  text: 'Register for top-choice camps early',                   note: 'Popular camps fill by February — do not wait' },
+      { id: 'i7',  text: 'Get on waitlists for any full camps',                   note: 'Spots open regularly as families cancel' },
+      { id: 'i8',  text: 'Confirm sibling or early-bird discounts',               note: 'Many camps offer 10–15% off before April 1' },
+      { id: 'i9',  text: 'Ask each camp if they accept FSA payments',             note: 'Request receipt/invoice format needed for FSA reimbursement' },
+      { id: 'i10', text: 'Book backup care for known gap weeks',                  note: 'Use Bright Horizons backup care for weeks not covered by camp' },
+    ]},
+    { id: 'c3', phase: 'Prepare (May–Jun)', items: [
+      { id: 'i11', text: 'Complete all camp medical/permission forms',             note: 'Usually required 2–4 weeks before start date' },
+      { id: 'i12', text: 'Update immunization records if needed',                 note: 'Many camps require current physicals' },
+      { id: 'i13', text: 'Label all clothing, water bottles, and backpacks',      note: 'Label maker or permanent marker — things disappear at camp' },
+      { id: 'i14', text: 'Talk to your child about what to expect',               note: 'Especially important for first-timers or anxious kids' },
+      { id: 'i15', text: 'Set up carpool or transport arrangements',              note: 'Coordinate with other camp families for drop-off/pick-up' },
+      { id: 'i16', text: 'Pack camp bag / prep first-day checklist',              note: 'Sunscreen, labeled items, snacks, change of clothes' },
+    ]},
+    { id: 'c4', phase: 'Summer (Jun–Aug)', items: [
+      { id: 'i17', text: 'Submit FSA reimbursement claims',                       note: 'Do this weekly or monthly — don\'t wait until the end of year' },
+      { id: 'i18', text: 'Check in with camp staff after week 1',                 note: 'A quick call confirms your child is settling in well' },
+      { id: 'i19', text: 'Activate backup care for any sick days or closures',    note: 'Use your Bright Horizons benefit — that\'s what it\'s there for' },
+      { id: 'i20', text: 'Save all camp receipts and invoices for taxes',         note: 'Needed for DCFSA and Child & Dependent Care Tax Credit (Form 2441)' },
+    ]},
+  ];
+
+  function buildChecklist() {
+    const container = document.getElementById('checklist-container');
+    const saved = JSON.parse(localStorage.getItem('campChecklist') || '{}');
+    let html = '';
+
+    CHECKLIST.forEach(phase => {
+      html += `<div class="checklist-section"><div class="checklist-heading">${phase.phase}</div>`;
+      phase.items.forEach(item => {
+        const checked = saved[item.id] || false;
+        html += `
+          <div class="checklist-item ${checked ? 'done' : ''}" id="row-${item.id}" onclick="toggleCheck('${item.id}')">
+            <input type="checkbox" id="${item.id}" ${checked ? 'checked' : ''} onclick="event.stopPropagation();toggleCheck('${item.id}')" />
+            <label for="${item.id}">
+              ${item.text}
+              ${item.note ? `<span class="item-note">${item.note}</span>` : ''}
+            </label>
+          </div>
+        `;
+      });
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+    updateProgress();
+  }
+
+  function toggleCheck(id) {
+    const saved = JSON.parse(localStorage.getItem('campChecklist') || '{}');
+    saved[id] = !saved[id];
+    localStorage.setItem('campChecklist', JSON.stringify(saved));
+    const row = document.getElementById('row-' + id);
+    const cb = document.getElementById(id);
+    cb.checked = saved[id];
+    row.classList.toggle('done', saved[id]);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const saved = JSON.parse(localStorage.getItem('campChecklist') || '{}');
+    const total = CHECKLIST.reduce((sum, p) => sum + p.items.length, 0);
+    const done = Object.values(saved).filter(Boolean).length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${done} of ${total} tasks complete`;
+  }
+
+  function resetChecklist() {
+    if (confirm('Reset all checklist progress?')) {
+      localStorage.removeItem('campChecklist');
+      buildChecklist();
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  FILTER CHIPS
+  // ─────────────────────────────────────────────────────────────
+  function toggleChip(el) { el.classList.toggle('active'); }
+
+  function toggleTypeChip(el) {
+    const allChip = document.querySelector('[data-type="all"]');
+    if (el.dataset.type === 'all') {
+      document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    } else {
+      allChip.classList.remove('active');
+      el.classList.toggle('active');
+      const anyActive = [...document.querySelectorAll('.type-chip:not([data-type="all"])')].some(c => c.classList.contains('active'));
+      if (!anyActive) allChip.classList.add('active');
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  GEOCODE ZIP → City, State  (free, no key needed)
+  // ─────────────────────────────────────────────────────────────
+  async function geocodeZip(zip) {
+    const url = `https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(zip)}&country=us&format=json&limit=1`;
+    const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      const parts = data[0].display_name.split(',');
+      return `${parts[0]?.trim() || ''}, ${parts[2]?.trim() || ''}`.replace(/,\s*$/, '');
+    }
+    return null;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  BUILD GOOGLE SEARCH QUERY
+  // ─────────────────────────────────────────────────────────────
+  function buildGoogleQuery(location) {
+    const activeAges = [...document.querySelectorAll('#ageChips .chip.active')].map(c => c.dataset.age);
+    const activeTypes = [...document.querySelectorAll('#typeChips .type-chip.active')].map(c => c.dataset.type);
+    const ageMap = {
+      infant: 'toddler infant', preschool: 'preschool ages 3-5',
+      elementary: 'ages 6-10', tween: 'ages 11-13', teen: 'teen ages 14-17'
+    };
+    const ageTerms = activeAges.map(a => ageMap[a] || a).join(' OR ');
+    const typeTerms = activeTypes.includes('all') ? '' : activeTypes.join(' OR ');
+    let q = `summer camp ${location}`;
+    if (typeTerms) q += ` (${typeTerms})`;
+    if (ageTerms) q += ` (${ageTerms})`;
+    return q;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  MAIN SEARCH — geocodes zip, opens Google in new tab
+  // ─────────────────────────────────────────────────────────────
+  async function runSearch() {
+    const zip = document.getElementById('zipInput').value.trim();
+    if (!zip) { alert('Please enter a zip code to search.'); return; }
+
+    const status = document.getElementById('status');
+    status.innerHTML = '<span class="loading-spinner"></span> Looking up your location...';
+
+    try {
+      const location = await geocodeZip(zip);
+      if (!location) {
+        status.innerHTML = 'Could not find that zip code. Please try another.';
+        return;
+      }
+
+      const query = buildGoogleQuery(location);
+      const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+
+      status.innerHTML = `Opening Google search for summer camps near <strong>${location}</strong>...`;
+      setTimeout(() => { status.innerHTML = ''; }, 3000);
+
+      window.open(googleUrl, '_blank', 'noopener');
+    } catch (err) {
+      status.innerHTML = 'Something went wrong. Check your connection and try again.';
+      console.error(err);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  INIT
+  // ─────────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('zipInput').addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(); });
+    buildChecklist();
+  });
+</script>
+</body>
+</html>
